@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Sidebar entry toggle",
+    "description": "Adds a Settings section with per-entry switches to show or hide left-sidebar navigation entries.",
+    "detail": "docs/DETAIL.md"
+  }
+}

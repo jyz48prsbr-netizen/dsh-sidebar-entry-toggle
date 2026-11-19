@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "侧栏入口开关",
+    "description": "在设置中增加一个分区，用独立开关控制左侧栏各导航入口的显示与隐藏。",
+    "detail": "docs/DETAIL.md"
+  }
+}

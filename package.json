@@ -1,0 +1,35 @@
+{
+  "name": "dsh-sidebar-entry-toggle",
+  "version": "1.0.0",
+  "description": "在设置中增加一个分区，用独立开关控制左侧栏各导航入口的显示与隐藏。",
+  "type": "module",
+  "license": "MIT",
+  "keywords": ["dsh", "dsh-plugin", "sidebar", "settings", "ui"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jyz48prsbr/dsh-sidebar-entry-toggle.git"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./package.json": "./package.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "docs",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": ["@deepseek-ai/dsh-client-ui-settings", "@deepseek-ai/dsh-client-ui-sidebar"]
+    }
+  }
+}
