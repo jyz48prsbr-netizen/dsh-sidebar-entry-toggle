@@ -7,7 +7,7 @@
   "keywords": ["dsh", "dsh-plugin", "sidebar", "settings", "ui"],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jyz48prsbr/dsh-sidebar-entry-toggle.git"
+    "url": "git+https://github.com/jyz48prsbr-netizen/dsh-sidebar-entry-toggle.git"
   },
   "exports": {
     ".": "./index.js",
