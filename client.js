@@ -111,6 +111,36 @@ window.__ModuleLoader__.load({
         document.head.appendChild(el)
       }
       el.textContent = rules.join('\n')
+
+      // JS fallback: apply the same hide/order rules directly to the real DOM
+      // nodes. Older embedded Chromium may not support :has(); setting inline
+      // style on the button and its row works everywhere and is re-applied by
+      // the existing timer, so it also survives React re-renders.
+      try {
+        const buttons = document.querySelectorAll('button[aria-label]')
+        for (const btn of buttons) {
+          const label = btn.getAttribute('aria-label') || ''
+          let hiddenThis = false
+          let orderVal = ENTRIES.length + 1
+          for (const e of ENTRIES) {
+            if (e.labels.indexOf(label) < 0) continue
+            hiddenThis = Boolean(hidden[e.key])
+            const idx = order.indexOf(e.key)
+            orderVal = (idx < 0 ? ENTRIES.length : idx) + 1
+            break
+          }
+          if (hiddenThis) {
+            btn.style.setProperty('display', 'none', 'important')
+            const row = btn.closest('[class*="panelEntry"], [data-dsh-part="sidebar-entry"], [class*="moreAnchor"]')
+            if (row) row.style.setProperty('display', 'none', 'important')
+          } else {
+            if (btn.style.getPropertyPriority('display') === 'important') btn.style.removeProperty('display')
+            btn.style.setProperty('order', String(orderVal))
+            const row = btn.closest('[class*="panelEntry"], [data-dsh-part="sidebar-entry"], [class*="moreAnchor"]')
+            if (row && row.style.getPropertyPriority('display') === 'important') row.style.removeProperty('display')
+          }
+        }
+      } catch (_) {}
     }
 
     function Toggle({ on }) {
