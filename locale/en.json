@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Sidebar entry toggle",
-    "description": "Adds a Settings section with per-entry switches to show or hide left-sidebar navigation entries.",
+    "description": "Adds a Settings section that automatically lists every sidebar entry, including newly installed plugins, with per-entry switches to show or hide and drag-to-reorder. No manual allowlist: new plugins are discovered automatically.",
     "detail": "docs/DETAIL.md"
   }
 }
