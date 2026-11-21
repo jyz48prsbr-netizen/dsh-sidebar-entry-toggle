@@ -18,9 +18,9 @@ A DeepSeek Harness plugin that adds a Settings section to show/hide and reorder 
 
 ## Update notes / 更新说明
 
-- **v1.1 (local upgrade)**: replaced the hard-coded label allowlist with automatic slot-based discovery. Existing label-based preferences are migrated to id-based keys. New plugins are picked up at runtime via `slots.subscribe` and a DOM MutationObserver, with no code change required.
+- **v1.1.0**: replaced the hard-coded label allowlist with automatic slot-based discovery. Existing label-based preferences are migrated to id-based keys. New plugins are picked up at runtime via `slots.subscribe` and a DOM MutationObserver, with no code change required. The reorder slider now keeps entry names fixed while the slider follows the pointer in real time.
 
-- **v1.1（本地升级）**：把硬编码的标签白名单改为基于 slot 的自动发现；旧的选择会迁移到 id key；通过 `slots.subscribe` 与 DOM MutationObserver 在运行时自动识别新插件，无需改代码。
+- **v1.1.0**：把硬编码的标签白名单改为基于 slot 的自动发现；旧的选择会迁移到 id key；通过 `slots.subscribe` 与 DOM MutationObserver 在运行时自动识别新插件，无需改代码。排序滑块现在保持入口名字固定、蓝色滑块实时跟手。
 
 ## Notes / 注意
 
@@ -29,4 +29,12 @@ A DeepSeek Harness plugin that adds a Settings section to show/hide and reorder 
 
 ## Install / 安装
 
-Local profile plugin.
+```
+dsh plugin add https://github.com/jyz48prsbr-netizen/dsh-sidebar-entry-toggle
+```
+
+Or install the prebuilt tarball from the [v1.1.0 release](https://github.com/jyz48prsbr-netizen/dsh-sidebar-entry-toggle/releases/tag/v1.1.0).
+
+## License
+
+MIT
