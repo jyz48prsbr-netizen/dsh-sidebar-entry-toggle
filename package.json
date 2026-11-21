@@ -1,6 +1,6 @@
 {
   "name": "@local/sidebar-entry-toggle",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "在设置中增加一个分区，自动列出侧栏所有入口（含新安装的插件），用独立开关控制显示与隐藏、拖动调整顺序。升级后无需手动维护白名单，新装插件自动纳入管理。",
   "private": true,
   "type": "module",
