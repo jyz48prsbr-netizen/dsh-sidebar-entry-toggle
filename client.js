@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-  id: '@local/sidebar-entry-toggle',
+  id: 'dsh-sidebar-entry-toggle',
   factory(require) {
     const React = require('react')
     const h = React.createElement
