@@ -1,14 +1,9 @@
 {
-  "name": "dsh-sidebar-entry-toggle",
-  "version": "1.0.0",
-  "description": "在设置中增加一个分区，用独立开关控制左侧栏各导航入口的显示与隐藏。",
+  "name": "@local/sidebar-entry-toggle",
+  "version": "1.1.0",
+  "description": "在设置中增加一个分区，自动列出侧栏所有入口（含新安装的插件），用独立开关控制显示与隐藏、拖动调整顺序。升级后无需手动维护白名单，新装插件自动纳入管理。",
+  "private": true,
   "type": "module",
-  "license": "MIT",
-  "keywords": ["dsh", "dsh-plugin", "sidebar", "settings", "ui"],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/jyz48prsbr-netizen/dsh-sidebar-entry-toggle.git"
-  },
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
@@ -22,7 +17,8 @@
     "cordis.patch.yml",
     "locale/*.json",
     "docs",
-    "icon.svg"
+    "icon.svg",
+    "README.md"
   ],
   "dsh": {
     "bundle": { "patch": "./cordis.patch.yml" },
