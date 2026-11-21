@@ -119,6 +119,16 @@ window.__ModuleLoader__.load({
 
     function syncEntries(ctx) {
       entries = readEntriesFromSlots(ctx)
+      // The official "More" launcher is NOT a sidebar.panellist slot entry —
+      // it is a hardcoded PanelMoreMenu rendered directly in the nav. Add it as
+      // a virtual entry only when it actually exists in the DOM, so it can be
+      // hidden / reordered like other rows without a fake switch otherwise.
+      let hasMore = false
+      try { hasMore = !!document.querySelector('nav[class*="panelList"] button[aria-haspopup="menu"]') } catch (_) {}
+      if (hasMore && !entries.some(e => e.id === 'more')) {
+        entries.push({ id: 'more', order: 9999, label: function () { return '更多' }, virtual: true })
+        entries.sort((a, b) => a.order - b.order)
+      }
       const ids = entries.map(e => e.id)
       // Drop stale keys, append new ids, keep saved relative order.
       const validOrder = (order || []).filter(k => ids.includes(k))
@@ -154,6 +164,12 @@ window.__ModuleLoader__.load({
         const idx = (order || []).indexOf(e.id)
         const val = (idx < 0 ? list.length : idx) + 1
         const isHidden = Boolean(hidden && hidden[e.id])
+        if (e.virtual && e.id === 'more') {
+          // "More" has no panelEntry wrapper; its flex item is [class*="moreAnchor"].
+          rules.push('nav[class*="panelList"] > [class*="moreAnchor"] { order: ' + val + ' !important; ' + (isHidden ? 'display: none !important;' : '') + ' }')
+          if (isHidden) rules.push('nav[class*="panelList"] button[aria-haspopup="menu"] { display: none !important; }')
+          continue
+        }
         // CSS path (works when label matches aria-label)
         const sel = 'nav[class*="panelList"] button[aria-label="' + String(label).replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"]'
         rules.push('[class*="panelEntry"]:has(' + sel + ') { order: ' + val + ' !important; ' + (isHidden ? 'display: none !important;' : '') + ' }')
@@ -182,6 +198,21 @@ window.__ModuleLoader__.load({
             if (btn.style.getPropertyPriority('display') === 'important') btn.style.removeProperty('display')
           }
         })
+        // "More" launcher: no panelEntry wrapper, handle its flex-item wrapper.
+        const moreBtn = document.querySelector('nav[class*="panelList"] button[aria-haspopup="menu"]')
+        if (moreBtn) {
+          const wrapper = moreBtn.closest('[class*="moreAnchor"]') || moreBtn.parentElement
+          const mIdx = (order || []).indexOf('more')
+          const mVal = (mIdx < 0 ? list.length : mIdx) + 1
+          if (wrapper) wrapper.style.setProperty('order', String(mVal))
+          if (hidden && hidden.more) {
+            if (wrapper) wrapper.style.setProperty('display', 'none', 'important')
+            moreBtn.style.setProperty('display', 'none', 'important')
+          } else {
+            if (wrapper && wrapper.style.getPropertyPriority('display') === 'important') wrapper.style.removeProperty('display')
+            if (moreBtn.style.getPropertyPriority('display') === 'important') moreBtn.style.removeProperty('display')
+          }
+        }
       } catch (_) {}
     }
 
@@ -338,7 +369,9 @@ window.__ModuleLoader__.load({
         }
         bindObserver()
         const observerTimer = setInterval(bindObserver, 2000)
-        const reapplyTimer = setInterval(function () { if (applyFn) applyFn(hidden, order, entries) }, 3000)
+        // Re-discover entries periodically so the virtual "More" entry appears
+        // even on a cold start where the nav was not rendered at apply() time.
+        const reapplyTimer = setInterval(function () { refresh() }, 3000)
         ctx.effect(() => function () {
           if (mo) mo.disconnect()
           clearInterval(observerTimer)
