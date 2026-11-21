@@ -121,11 +121,10 @@ window.__ModuleLoader__.load({
       entries = readEntriesFromSlots(ctx)
       // The official "More" launcher is NOT a sidebar.panellist slot entry —
       // it is a hardcoded PanelMoreMenu rendered directly in the nav. Add it as
-      // a virtual entry only when it actually exists in the DOM, so it can be
-      // hidden / reordered like other rows without a fake switch otherwise.
-      let hasMore = false
-      try { hasMore = !!document.querySelector('nav[class*="panelList"] button[aria-haspopup="menu"]') } catch (_) {}
-      if (hasMore && !entries.some(e => e.id === 'more')) {
+      // a virtual entry unconditionally: when the button is absent the switch
+      // is simply a no-op, which is harmless, and this guarantees it shows up
+      // in the panel regardless of when the nav DOM finishes rendering.
+      if (!entries.some(e => e.id === 'more')) {
         entries.push({ id: 'more', order: 9999, label: function () { return '更多' }, virtual: true })
         entries.sort((a, b) => a.order - b.order)
       }
