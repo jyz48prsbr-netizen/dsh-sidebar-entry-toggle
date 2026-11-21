@@ -1,27 +1,32 @@
-# dsh-sidebar-entry-toggle
+# Sidebar entry toggle / 侧栏入口开关
 
-在「设置」中增加一个「侧栏入口管理」分区，用独立开关逐项控制左侧栏导航入口的显示与隐藏，并可拖动调整顺序。
+A DeepSeek Harness plugin that adds a Settings section to show/hide and reorder left-sidebar navigation entries.
 
-## 功能
+一个 DeepSeek Harness 插件，在设置中增加分区，控制左侧栏入口的显示/隐藏与排序。
 
-- 8 个独立开关：插件、插件市场、DeepSeek 网页版、自动化任务、智能体、技能中心、SSH、更多。
-- 「全部显示」一键恢复；偏好保存在浏览器本地，刷新后仍生效。
-- 隐藏只作用于左侧栏显示，**不会卸载相关插件或影响其功能**。
-- 按可见文字匹配（中英文标签都覆盖），切换界面语言后仍然有效。
-- 第三方插件延迟加载入口时会自动补隐藏。
-- 支持拖动数字调整左侧栏顺序（数字越小越靠上），可恢复默认顺序。
+## What it does / 功能
 
-## 局限
+- Lists **every** sidebar entry automatically by reading DSH's `sidebar.panellist` slot registry.
+- Newly installed plugins (e.g. IM bots) appear in the list automatically — **no manual allowlist needed**.
+- Toggle each entry on/off; drag the number to reorder (smaller = higher). Settings persist across reloads.
+- Uses stable slot **ids** as keys, so localized labels / language switches never break saved choices.
 
-- 按可见文字匹配，若某个插件使用了同名的自定义标签，可能一并隐藏。
-- 隐藏「更多」会同时收起其菜单里的未固定入口与创建插件入口。
+- 自动读取 DSH 的 `sidebar.panellist` slot 注册表，**列出所有**侧栏入口。
+- **新安装的插件（如 IM机器人）自动出现在列表中，无需手动加白名单。**
+- 独立开关控制显示/隐藏，拖动数字调整顺序（越小越靠上），刷新后仍生效。
+- 用稳定的 slot **id** 作 key，语言切换不会让已保存的选择失效。
 
-## 安装
+## Update notes / 更新说明
 
-在 DSH 插件页通过本地目录安装，或通过插件市场索引安装本包。安装后无需重启（Client 端即时生效）。
+- **v1.1 (local upgrade)**: replaced the hard-coded label allowlist with automatic slot-based discovery. Existing label-based preferences are migrated to id-based keys. New plugins are picked up at runtime via `slots.subscribe` and a DOM MutationObserver, with no code change required.
 
-详细配置见 [docs/DETAIL.md](docs/DETAIL.md)。
+- **v1.1（本地升级）**：把硬编码的标签白名单改为基于 slot 的自动发现；旧的选择会迁移到 id key；通过 `slots.subscribe` 与 DOM MutationObserver 在运行时自动识别新插件，无需改代码。
 
-## 许可
+## Notes / 注意
 
-MIT
+- Only display is affected; the plugin never uninstalls anything and never suspends work.
+- Entries it cannot identify are left visible (never hidden by accident).
+
+## Install / 安装
+
+Local profile plugin.
