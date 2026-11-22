@@ -129,11 +129,15 @@ window.__ModuleLoader__.load({
         entries.sort((a, b) => a.order - b.order)
       }
       const ids = entries.map(e => e.id)
-      // Drop stale keys, append new ids, keep saved relative order.
-      const validOrder = (order || []).filter(k => ids.includes(k))
-      for (const id of ids) if (!validOrder.includes(id)) validOrder.push(id)
-      order = validOrder.length ? validOrder : ['plugins', 'market', 'deepseek', 'schedule', 'agents', 'skills', 'ssh', 'more'].filter(k => ids.includes(k))
-      if (!order.length) order = ids.slice()
+      // Keep the saved order as the single source of truth. A cold start can
+      // discover only part of the slot entries; filtering the saved order by the
+      // current (incomplete) ids would silently drop entries and lose the user's
+      // drag order after a full restart. So: never remove saved ids here — only
+      // append newly discovered ones. Stale ids of uninstalled plugins simply
+      // stay unused (harmless) and are cleaned up only by an explicit reset.
+      const next = (order || []).slice()
+      for (const id of ids) if (!next.includes(id)) next.push(id)
+      order = next.length ? next : ids.slice()
       if (applyFn) applyFn(hidden, order, entries)
       return entries
     }
